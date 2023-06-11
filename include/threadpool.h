@@ -78,7 +78,7 @@ private:
 
 private:
 
-    std::vector<Thread*> threads_;
+    std::vector<std::unique_ptr<Thread>> threads_;
 	size_t initThreadSize_;  
 
 	std::queue<std::shared_ptr<Task>> taskQue_;   

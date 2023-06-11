@@ -53,9 +53,24 @@ void ThreadPool::setInitThreadSize(int size)
 
 void ThreadPool::submitTask(std::shared_ptr<Task> sp) {
 
+	// 获取锁
+	std::unique_lock<std::mutex> lock(taskQueMtx_);
 
+	// 线程的通信 等待线程队列有空余
+#if 0
+	while (taskQue_.size() == taskQueMaxThreshold_) {
+		notFull_.wait(lock);
+	}
+#else  // 与上面等价
+	notFull_.wait(lock, [&]()->bool { return taskQue_.size() < taskQueMaxThreshold_; });
+#endif
 
+	// 如果有空余，把任务放入任务队列中
+	taskQue_.emplace(sp);
+	taskSize_++;
 
+	// 任务队列不空，notEmpty_进行通知消费者线程
+	notEmpty_.notify_all();  // 加入一个任务通知所有消费者线程会不会有点浪费系统资源,为什么不直接通知一个线程???
 }
 
 
@@ -67,7 +82,8 @@ void ThreadPool::start(int initThreadSize)
 
 	for (int i = 0; i < initThreadSize_; i++)
 	{
-		threads_.emplace_back(new Thread(std::bind(&ThreadPool::threadFunc, this)));
+		auto ptr = std::make_unique<Thread>(std::bind(&ThreadPool::threadFunc, this));
+		threads_.emplace_back(std::move(ptr));
 	}
 
 	for (int i = 0; i < initThreadSize_; i++)
