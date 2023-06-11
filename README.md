@@ -6,7 +6,7 @@ mkdir build
 sh autobuild.sh
 ```
 
-### 2.线程池项目内存泄漏检查
+#### 2.线程池项目内存泄漏检查
 ```shell
 valgrind --tool=memcheck --leak-check=full --show-reachable=yes --trace-children=yes ./bin/test
 ```
