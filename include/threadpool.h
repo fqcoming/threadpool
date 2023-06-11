@@ -69,6 +69,61 @@ private:
 
 
 
+class Semaphore
+{
+public:
+	Semaphore(int limit = 0) 
+		: resLimit_(limit)
+	{}
+	~Semaphore() = default;
+
+	void wait()
+	{
+		std::unique_lock<std::mutex> lock(mtx_);
+		cond_.wait(lock, [&]()->bool {return resLimit_ > 0; });
+		resLimit_--;
+	}
+
+
+	void post()
+	{
+		std::unique_lock<std::mutex> lock(mtx_);
+		resLimit_++;
+		cond_.notify_all();  
+	}
+
+private:
+	int resLimit_;
+	std::mutex mtx_;
+	std::condition_variable cond_;
+};
+
+
+
+class Task;
+
+class Result
+{
+public:
+	Result(std::shared_ptr<Task> task, bool isValid = true);
+	~Result() = default;
+
+	void setVal(Any any);
+
+	Any get();
+private:
+	Any any_;    // 存储任务的返回值
+	Semaphore sem_; 
+	std::shared_ptr<Task> task_; 
+	std::atomic_bool isValid_;
+};
+
+
+
+
+
+
+
 // 任务抽象基类
 // 用户可以自定义任意任务类型，从Task继承，重写run方法，实现自定义
 class Task

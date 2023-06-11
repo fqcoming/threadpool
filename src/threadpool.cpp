@@ -183,9 +183,30 @@ void Thread::start() {
 
 
 
+/////////////////////// Result类相关实现
 
 
+Result::Result(std::shared_ptr<Task> task, bool isValid)
+	: isValid_(isValid)
+	, task_(task)
+{
+	task_->setResult(this);
+}
 
+Any Result::get() 
+{
+	if (!isValid_)
+	{
+		return "";
+	}
+	sem_.wait();
+	return std::move(any_);
+}
 
+void Result::setVal(Any any) 
+{
+	this->any_ = std::move(any);
+	sem_.post();
+}
 
 
