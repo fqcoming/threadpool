@@ -2,8 +2,8 @@
 # 定义了一个SRC_LIST变量，包含了该目录下所有的源文件
 aux_source_directory(. SRC_LIST)
 
-add_executable(test ${SRC_LIST})
-target_link_libraries(test pthread threadpool)
+add_executable(example ${SRC_LIST})
+target_link_libraries(example pthread threadpool)
 
 
 

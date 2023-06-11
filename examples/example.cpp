@@ -4,6 +4,9 @@
 
 
 
+
+
+
 class MyTask : public Task {
 public:
     MyTask(int begin, int end) : begin_(begin), end_(end) {
@@ -16,10 +19,8 @@ public:
         std::cout << "tid: " << std::this_thread::get_id() << "end!" << std::endl;
 
 
-
-
     }
-    
+
 private:
     int begin_;
     int end_;
@@ -35,20 +36,20 @@ int main() {
     pool.start(4);
 
 
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
+    pool.submitTask(std::make_shared<MyTask>(1, 100));
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
 
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
 
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
-    pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
+    // pool.submitTask(std::make_shared<MyTask>());
 
 
     getchar();

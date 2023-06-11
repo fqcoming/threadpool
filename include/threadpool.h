@@ -13,6 +13,61 @@
 
 
 
+#if 1
+
+// 怎么构建一个Any类型
+class Any 
+{
+public:
+    Any() = default;
+    ~Any() = default;
+
+    Any(const Any&) = delete;
+    Any& operator=(const Any&) = delete;
+
+    Any(Any&&) = default;
+    Any& operator=(Any&&) = default;
+
+    // 这个构造函数可以让Any类型接收任意其他类型的数据
+    template <typename T>
+    Any(T data) : base_(std::make_unique<Derive<T>>(data)) {}
+
+    // 将data数据取出来
+    template <typename T>
+    T cast_() {
+        Derive<T> *pd = dynamic_cast<Derive<T>*>(base_.get());
+        if (pd == nullptr) {
+            throw "type is unmatch!";
+        }
+        return pd->data_;
+    }
+
+
+private:
+    class Base 
+    {
+    public:
+        virtual ~Base() = default;
+    };
+
+    template <typename T>
+    class Derive : public Base
+    {
+    public:
+        Derive(T data) : data_(data) {}
+
+    private:
+        T data_;
+    };
+
+private:
+    std::unique_ptr<Base> base_;
+
+};
+
+#endif 
+
+
 
 // 任务抽象基类
 // 用户可以自定义任意任务类型，从Task继承，重写run方法，实现自定义
