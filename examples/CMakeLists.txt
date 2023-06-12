@@ -3,7 +3,7 @@
 aux_source_directory(. SRC_LIST)
 
 add_executable(example ${SRC_LIST})
-target_link_libraries(example pthread threadpool)
+target_link_libraries(example threadpool pthread)
 
 
 

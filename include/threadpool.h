@@ -13,8 +13,6 @@
 
 
 
-#if 1
-
 // 怎么构建一个Any类型
 class Any 
 {
@@ -55,8 +53,6 @@ private:
     {
     public:
         Derive(T data) : data_(data) {}
-
-    private:
         T data_;
     };
 
@@ -65,7 +61,7 @@ private:
 
 };
 
-#endif 
+
 
 
 
@@ -129,10 +125,15 @@ private:
 class Task
 {
 public:
-    virtual void run() = 0;
+	Task();
+	~Task() = default;
+	void exec();
+	void setResult(Result* res);
+
+	virtual Any run() = 0;
 
 private:
-
+	Result* result_; 
 };
 
 
@@ -174,7 +175,7 @@ public:
 	void setMode(PoolMode mode);
     void setInitThreadSize(int size);
 	void setTaskQueMaxThreshold(int threshhold);
-    void submitTask(std::shared_ptr<Task> sp);
+    Result submitTask(std::shared_ptr<Task> sp);
     void start(int initThreadSize = std::thread::hardware_concurrency());
 
 	ThreadPool(const ThreadPool&) = delete;
