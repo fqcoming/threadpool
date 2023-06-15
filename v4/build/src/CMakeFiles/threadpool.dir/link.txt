@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -g -std=c++17 -shared -Wl,-soname,libthreadpool.so -o ../../lib/libthreadpool.so CMakeFiles/threadpool.dir/threadpool.cpp.o   -L/home/fenghua22/threadpool/lib 

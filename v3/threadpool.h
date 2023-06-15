@@ -31,7 +31,6 @@ public:
 
 	using ThreadFunc = std::function<void(int)>;
 
-
 	Thread(ThreadFunc func)
 		: func_(func)
 		, threadId_(generateId_++)
@@ -55,6 +54,7 @@ private:
 	static int generateId_;
 	int threadId_;  
 };
+
 
 int Thread::generateId_ = 0;
 

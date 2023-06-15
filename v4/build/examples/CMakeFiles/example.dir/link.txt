@@ -1,0 +1,1 @@
+/usr/bin/c++  -g -std=c++17 -rdynamic CMakeFiles/example.dir/example.cpp.o -o ../../bin/example   -L/home/fenghua22/threadpool/lib  -Wl,-rpath,/home/fenghua22/threadpool/lib ../../lib/libthreadpool.so -lpthread 
